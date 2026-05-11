@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>marcandronan.com</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Verdana&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: #c0c0c0;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='2' height='2' fill='%23b0b0b0'/%3E%3Crect x='2' y='2' width='2' height='2' fill='%23b0b0b0'/%3E%3C/svg%3E");
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    cursor: default;
+    min-height: 100vh;
+  }
+
+  /* ── Blinking alert bar ── */
+  .alert-bar {
+    background: #ff0000;
+    color: #ffff00;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: Arial Black, sans-serif;
+    animation: blink 0.6s step-start infinite;
+    border-bottom: 3px solid #800000;
+    letter-spacing: 1px;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ── Windows-style title bar ── */
+  .win-titlebar {
+    background: linear-gradient(to right, #000080, #1084d0);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 6px;
+    user-select: none;
+  }
+  .win-title {
+    color: #fff;
+    font-family: 'Tahoma', sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .win-icon {
+    width: 16px; height: 16px;
+    background: #ff0;
+    border: 2px solid #fff;
+    border-radius: 2px;
+    display: inline-block;
+  }
+  .win-buttons { display: flex; gap: 3px; }
+  .win-btn {
+    width: 18px; height: 16px;
+    background: #d4d0c8;
+    border: 2px solid;
+    border-color: #fff #808080 #808080 #fff;
+    font-size: 10px;
+    font-weight: bold;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-family: Marlett, Arial, sans-serif;
+  }
+
+  /* ── Main window frame ── */
+  .window {
+    margin: 18px auto;
+    max-width: 780px;
+    border: 3px solid;
+    border-color: #fff #808080 #808080 #fff;
+    box-shadow: 4px 4px 0 #000;
+    background: #ececec;
+  }
+
+  /* ── Toolbar strip ── */
+  .toolbar {
+    background: #d4d0c8;
+    border-bottom: 2px solid #808080;
+    padding: 4px 8px;
+    display: flex; gap: 6px; align-items: center;
+  }
+  .tb-btn {
+    background: #d4d0c8;
+    border: 2px solid;
+    border-color: #fff #808080 #808080 #fff;
+    padding: 2px 10px;
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+    cursor: pointer;
+  }
+  .tb-btn:active { border-color: #808080 #fff #fff #808080; }
+  .address-bar {
+    flex: 1;
+    background: #fff;
+    border: 2px inset #808080;
+    padding: 1px 6px;
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+    color: #000080;
+  }
+
+  /* ── Content area ── */
+  .content {
+    background: #ffffff;
+    border: 3px inset #808080;
+    margin: 10px;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  /* ── Header banner with WordArt-style text ── */
+  .header-banner {
+    background: linear-gradient(135deg, #000080 0%, #0000cd 40%, #4169e1 60%, #000080 100%);
+    padding: 16px 12px 12px;
+    text-align: center;
+    border-bottom: 4px solid #ff0000;
+    position: relative;
+    overflow: hidden;
+  }
+  .header-banner::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent, transparent 8px,
+      rgba(255,255,255,0.04) 8px, rgba(255,255,255,0.04) 10px
+    );
+  }
+
+  /* WordArt-style site name */
+  .wordart {
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    font-size: 42px;
+    font-weight: 900;
+    text-transform: uppercase;
+    display: inline-block;
+    background: linear-gradient(to bottom, #ffff00 0%, #ffa500 50%, #ff4500 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(3px 3px 0 #000) drop-shadow(-1px -1px 0 rgba(255,255,255,0.3));
+    transform: skewX(-8deg) scaleY(1.1);
+    letter-spacing: 2px;
+    position: relative;
+  }
+
+  /* ── Marquee strip ── */
+  .marquee-wrap {
+    background: #000080;
+    padding: 4px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-inner {
+    display: inline-block;
+    animation: marquee 14s linear infinite;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2px;
+  }
+  @keyframes marquee { from { transform: translateX(110vw); } to { transform: translateX(-100%); } }
+
+  /* ── Starburst badge ── */
+  .badge-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 12px 6px;
+    background: #fffbe6;
+    border-bottom: 2px dashed #ff8c00;
+    flex-wrap: wrap;
+  }
+  .starburst {
+    position: relative;
+    width: 90px; height: 90px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .starburst svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .starburst-text {
+    position: relative; z-index: 1;
+    font-family: Impact, sans-serif;
+    font-size: 10px;
+    font-weight: 900;
+    color: #fff;
+    text-align: center;
+    text-transform: uppercase;
+    line-height: 1.1;
+    max-width: 60px;
+  }
+
+  /* ── Two-column layout ── */
+  .cols {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 0;
+    padding: 10px 12px;
+    background: #fff;
+  }
+
+  /* Image placeholder */
+  .img-placeholder {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: repeating-linear-gradient(
+      45deg,
+      #ddd 0px, #ddd 10px,
+      #eee 10px, #eee 20px
+    );
+    border: 3px inset #808080;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-family: Tahoma, sans-serif;
+    font-size: 12px;
+    text-align: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .img-placeholder svg { opacity: 0.4; }
+  .img-placeholder span { font-size: 10px; opacity: 0.7; }
+
+  /* Side panel */
+  .side-panel {
+    padding-left: 12px;
+    border-left: 2px dashed #999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .side-box {
+    border: 3px solid;
+    border-color: #fff #808080 #808080 #fff;
+    background: #d4d0c8;
+    padding: 6px;
+  }
+  .side-box-title {
+    background: linear-gradient(to right, #000080, #1084d0);
+    color: #fff;
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 6px;
+    margin: -6px -6px 6px -6px;
+  }
+
+  /* Progress bar */
+  .fake-progress {
+    height: 16px;
+    background: #fff;
+    border: 2px inset #808080;
+    overflow: hidden;
+    margin: 4px 0;
+  }
+  .fake-progress-bar {
+    height: 100%;
+    background: repeating-linear-gradient(
+      90deg,
+      #000080 0px, #000080 14px,
+      #4169e1 14px, #4169e1 18px
+    );
+    width: 72%;
+    animation: progpulse 2s ease-in-out infinite alternate;
+  }
+  @keyframes progpulse { from { opacity: 0.7; } to { opacity: 1; } }
+
+  /* Danger box */
+  .danger-box {
+    background: #fff0f0;
+    border: 3px solid #ff0000;
+    padding: 8px;
+    text-align: center;
+    animation: dangerpulse 1.2s ease-in-out infinite alternate;
+  }
+  @keyframes dangerpulse { from { background: #fff0f0; } to { background: #ffe0e0; } }
+  .danger-icon { font-size: 28px; }
+
+  /* Bottom action strip */
+  .action-strip {
+    background: linear-gradient(to bottom, #fffbe6, #fff8cc);
+    border-top: 3px solid #ffa500;
+    border-bottom: 3px solid #ffa500;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .cta-btn {
+    background: linear-gradient(to bottom, #ff6600, #cc3300);
+    border: 3px outset #ff8844;
+    color: #fff;
+    font-family: Impact, sans-serif;
+    font-size: 16px;
+    font-weight: 900;
+    text-transform: uppercase;
+    padding: 8px 22px;
+    cursor: pointer;
+    text-shadow: 1px 1px 0 #000;
+    box-shadow: 3px 3px 0 #000;
+    letter-spacing: 1px;
+    animation: ctapulse 1s ease-in-out infinite alternate;
+  }
+  @keyframes ctapulse { from { transform: scale(1); } to { transform: scale(1.04); } }
+  .cta-btn:active { transform: scale(0.97) !important; box-shadow: 1px 1px 0 #000; }
+
+  .cta-btn-green {
+    background: linear-gradient(to bottom, #00aa00, #006600);
+    border: 3px outset #44cc44;
+    animation-delay: 0.5s;
+  }
+
+  /* Footer */
+  .win-statusbar {
+    background: #d4d0c8;
+    border-top: 2px solid #fff;
+    padding: 3px 8px;
+    display: flex; gap: 12px;
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+    color: #000;
+  }
+  .status-panel {
+    border: 1px inset #808080;
+    padding: 0 8px;
+    flex: 1;
+  }
+
+  /* Decorative gif-style spinning element */
+  .spin-globe {
+    display: inline-block;
+    animation: spin 3s linear infinite;
+    font-size: 22px;
+  }
+  @keyframes spin { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
+
+  /* Counter widget */
+  .counter-box {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    background: #000;
+    color: #00ff00;
+    padding: 3px 6px;
+    border: 2px inset #008000;
+    text-align: center;
+  }
+
+  /* Certificate badge */
+  .cert-badge {
+    border: 3px double #ffd700;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    color: #ffd700;
+    padding: 6px;
+    text-align: center;
+    font-family: 'Times New Roman', serif;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .cert-badge .cert-title {
+    font-size: 11px;
+    font-weight: bold;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- Window chrome -->
+<div class="window">
+
+  <!-- Title bar -->
+  <div class="win-titlebar">
+    <div class="win-title">
+      <span class="win-icon"></span>
+      marcandronan.com — Microsoft Security Alert
+    </div>
+    <div class="win-buttons">
+      <div class="win-btn">_</div>
+      <div class="win-btn">□</div>
+      <div class="win-btn" style="background:#c0392b;color:#fff;">✕</div>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <button class="tb-btn">◀ Back</button>
+    <button class="tb-btn">Forward ▶</button>
+    <button class="tb-btn">🏠 Home</button>
+    <button class="tb-btn">⟳ Refresh</button>
+    <div class="address-bar">http://www.marcandronan.com/security-alert/index.html</div>
+    <button class="tb-btn">Go</button>
+  </div>
+
+  <!-- Content area -->
+  <div class="content">
+
+    <!-- Header -->
+    <div class="header-banner">
+      <div class="wordart">marcandronan.com</div>
+    </div>
+
+    <!-- Scrolling marquee -->
+    <div class="marquee-wrap">
+      <span class="marquee-inner">
+        ★★★ OFFICIAL NOTICE ★★★ &nbsp;&nbsp;&nbsp;
+        ★★★ OFFICIAL NOTICE ★★★ &nbsp;&nbsp;&nbsp;
+        ★★★ OFFICIAL NOTICE ★★★ &nbsp;&nbsp;&nbsp;
+        ★★★ OFFICIAL NOTICE ★★★ &nbsp;&nbsp;&nbsp;
+        ★★★ OFFICIAL NOTICE ★★★ &nbsp;&nbsp;&nbsp;
+      </span>
+    </div>
+
+    <!-- Starburst badges row -->
+    <div class="badge-row">
+
+      <div class="starburst">
+        <svg viewBox="0 0 100 100">
+          <polygon points="50,2 61,35 97,35 68,57 79,91 50,70 21,91 32,57 3,35 39,35" fill="#ff0000" stroke="#800000" stroke-width="2"/>
+        </svg>
+        <div class="starburst-text">100%<br>FREE<br>SCAN!</div>
+      </div>
+
+      <div class="starburst">
+        <svg viewBox="0 0 100 100">
+          <polygon points="50,2 61,35 97,35 68,57 79,91 50,70 21,91 32,57 3,35 39,35" fill="#ff8c00" stroke="#cc6600" stroke-width="2"/>
+        </svg>
+        <div class="starburst-text">VIRUS<br>DETECTED<br>NOW!</div>
+      </div>
+
+      <div class="starburst">
+        <svg viewBox="0 0 100 100">
+          <polygon points="50,2 61,35 97,35 68,57 79,91 50,70 21,91 32,57 3,35 39,35" fill="#006400" stroke="#003200" stroke-width="2"/>
+        </svg>
+        <div class="starburst-text">ACT<br>IMMED-<br>IATELY</div>
+      </div>
+
+      <div class="starburst">
+        <svg viewBox="0 0 100 100">
+          <polygon points="50,2 61,35 97,35 68,57 79,91 50,70 21,91 32,57 3,35 39,35" fill="#000080" stroke="#000040" stroke-width="2"/>
+        </svg>
+        <div class="starburst-text">TRUSTED<br>SINCE<br>1998!</div>
+      </div>
+
+      <div class="starburst">
+        <svg viewBox="0 0 100 100">
+          <polygon points="50,2 61,35 97,35 68,57 79,91 50,70 21,91 32,57 3,35 39,35" fill="#9400d3" stroke="#5c0082" stroke-width="2"/>
+        </svg>
+        <div class="starburst-text">NO.<br>1 IN<br>WORLD!</div>
+      </div>
+
+    </div>
+
+    <!-- Two-column main -->
+    <div class="cols">
+
+      <!-- Left: image placeholder -->
+      <div style="padding-right: 12px; display: flex; flex-direction: column; gap: 10px;">
+        <img src="mar.jpg" style="width:100%; border: 3px inset #808080; display:block;">
+      </div>
+
+      <!-- Right: side widgets -->
+      <div class="side-panel">
+
+        <!-- Danger box -->
+        <div class="danger-box">
+          <div class="danger-icon">☠️</div>
+        </div>
+
+        <!-- Progress scan widget -->
+        <div class="side-box">
+          <div class="side-box-title">System Scan Progress</div>
+          <div class="fake-progress"><div class="fake-progress-bar"></div></div>
+          <div class="fake-progress"><div class="fake-progress-bar" style="width:91%;animation-delay:.3s"></div></div>
+          <div class="fake-progress"><div class="fake-progress-bar" style="width:44%;animation-delay:.6s"></div></div>
+        </div>
+
+        <!-- Visitor counter -->
+        <div class="side-box">
+          <div class="side-box-title"><span class="spin-globe">🌐</span> Visitor Counter</div>
+          <div class="counter-box">004,821,337</div>
+        </div>
+
+        <!-- Certificate -->
+        <div class="cert-badge">
+          <div class="cert-title">★ Certified ★</div>
+          <div>Secure & Verified</div>
+          <div>marcandronan.com</div>
+          <div>© 2004 All Rights Reserved</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CTA action strip -->
+    <div class="action-strip">
+      <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" target="_blank"><button class="cta-btn">⚡ CLICK HERE NOW ⚡</button></a>
+      <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" target="_blank"><button class="cta-btn cta-btn-green">✅ DOWNLOAD FREE</button></a>
+      <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" target="_blank"><button class="cta-btn">🔐 SECURE MY PC</button></a>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- Status bar -->
+  <div class="win-statusbar">
+    <div class="status-panel">✔ Done</div>
+    <div class="status-panel">🌐 Internet</div>
+    <div class="status-panel">🔒 marcandronan.com</div>
+  </div>
+
+</div><!-- /window -->
+
+</body>
+</html>
