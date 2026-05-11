@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>marcandronan.com</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: #c0c0c0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='2' height='2' fill='%23b0b0b0'/%3E%3Crect x='2' y='2' width='2' height='2' fill='%23b0b0b0'/%3E%3C/svg%3E");
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    cursor: default;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+  @keyframes marquee { from { transform: translateX(110vw); } to { transform: translateX(-100%); } }
+  @keyframes marquee2 { from { transform: translateX(110vw); } to { transform: translateX(-100%); } }
+  @keyframes marquee3 { from { transform: translateX(-100%); } to { transform: translateX(110vw); } }
+  @keyframes spin { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
+  @keyframes starspin {
+    0%,100% { transform: scale(1) rotate(0deg); }
+    25% { transform: scale(1.12) rotate(6deg); }
+    75% { transform: scale(0.93) rotate(-6deg); }
+  }
+  @keyframes popbounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+  @keyframes popbounce2 { 0%,100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-8px) rotate(1deg); } }
+  @keyframes popbounce3 { 0%,100% { transform: translateY(0) rotate(2deg); } 50% { transform: translateY(-15px) rotate(-2deg); } }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-5px) rotate(-6deg); }
+    40% { transform: translateX(5px) rotate(6deg); }
+    60% { transform: translateX(-3px); }
+    80% { transform: translateX(3px); }
+  }
+  @keyframes ctawobble { from { transform: scale(1) rotate(-1.5deg); } to { transform: scale(1.07) rotate(1.5deg); } }
+  @keyframes countglow {
+    from { box-shadow: 0 0 6px #ff0000; }
+    to   { box-shadow: 0 0 20px #ff0000, 0 0 35px #ff6600; }
+  }
+  @keyframes rainbowborder {
+    0%   { border-color: #ff0000; } 16%  { border-color: #ff8800; }
+    33%  { border-color: #ffff00; } 50%  { border-color: #00cc00; }
+    66%  { border-color: #0000ff; } 83%  { border-color: #8800ff; }
+    100% { border-color: #ff0000; }
+  }
+  @keyframes headerpulse { from { filter: brightness(1); } to { filter: brightness(1.3); } }
+  @keyframes dangerpulse { from { background: #fff0f0; } to { background: #ffcccc; } }
+  @keyframes progpulse { from { opacity: 0.7; } to { opacity: 1; } }
+  @keyframes wobbletext { 0%,100% { transform: skewX(0deg); } 25% { transform: skewX(-4deg); } 75% { transform: skewX(4deg); } }
+  @keyframes colorshift { 0%{color:#ff0000;} 25%{color:#ffff00;} 50%{color:#00ff00;} 75%{color:#ff88ff;} 100%{color:#ff0000;} }
+  @keyframes zoomping { 0%,100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+
+  /* ── Top ticker ── */
+  .top-ticker { background:#000; color:#00ff00; font-family:'Courier New',monospace; font-size:12px; padding:3px 0; overflow:hidden; white-space:nowrap; }
+  .top-ticker-inner { display:inline-block; animation:marquee 22s linear infinite; letter-spacing:1px; }
+
+  /* ── Window chrome ── */
+  .win-titlebar { background:linear-gradient(to right,#000080,#1084d0); display:flex; align-items:center; justify-content:space-between; padding:3px 6px; user-select:none; }
+  .win-title { color:#fff; font-family:Tahoma,sans-serif; font-size:13px; font-weight:bold; display:flex; align-items:center; gap:6px; }
+  .win-icon { width:16px; height:16px; background:#ff0; border:2px solid #fff; border-radius:2px; display:inline-block; }
+  .win-buttons { display:flex; gap:3px; }
+  .win-btn { width:18px; height:16px; background:#d4d0c8; border:2px solid; border-color:#fff #808080 #808080 #fff; font-size:10px; font-weight:bold; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .window { margin:14px auto; max-width:800px; border:3px solid; border-color:#fff #808080 #808080 #fff; box-shadow:4px 4px 0 #000; background:#ececec; }
+  .toolbar { background:#d4d0c8; border-bottom:2px solid #808080; padding:4px 8px; display:flex; gap:6px; align-items:center; }
+  .tb-btn { background:#d4d0c8; border:2px solid; border-color:#fff #808080 #808080 #fff; padding:2px 10px; font-family:Tahoma,sans-serif; font-size:11px; cursor:pointer; text-decoration:none; color:#000; }
+  .address-bar { flex:1; background:#fff; border:2px inset #808080; padding:1px 6px; font-family:Tahoma,sans-serif; font-size:11px; color:#000080; }
+  .content { background:#fff; border:3px inset #808080; margin:10px; padding:0; overflow:hidden; animation:rainbowborder 2.5s linear infinite; }
+
+  /* ── Header ── */
+  .header-banner { background:linear-gradient(135deg,#000080 0%,#0000cd 40%,#4169e1 60%,#000080 100%); padding:14px 12px 10px; text-align:center; border-bottom:4px solid #ff0000; position:relative; overflow:hidden; animation:headerpulse 1.8s ease-in-out infinite alternate; }
+  .wordart { font-family:Impact,'Arial Black',sans-serif; font-size:42px; font-weight:900; text-transform:uppercase; display:inline-block; background:linear-gradient(to bottom,#ffff00 0%,#ffa500 50%,#ff4500 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; filter:drop-shadow(3px 3px 0 #000); transform:skewX(-8deg) scaleY(1.1); letter-spacing:2px; animation:wobbletext 3s ease-in-out infinite; }
+  .header-sub { color:#fff; font-family:Impact,sans-serif; font-size:13px; letter-spacing:2px; margin-top:4px; animation:colorshift 2s linear infinite; }
+
+  /* ── Marquees ── */
+  .marquee-wrap { background:#000080; padding:4px 0; overflow:hidden; white-space:nowrap; }
+  .marquee-inner { display:inline-block; animation:marquee 16s linear infinite; color:#00ff00; font-family:'Courier New',monospace; font-size:13px; font-weight:bold; letter-spacing:2px; }
+  .marquee-wrap2 { background:#ff0000; padding:3px 0; overflow:hidden; white-space:nowrap; }
+  .marquee-inner2 { display:inline-block; animation:marquee2 11s linear infinite; color:#fff; font-family:Impact,sans-serif; font-size:13px; font-weight:bold; letter-spacing:3px; }
+  .marquee-wrap3 { background:#ff8800; padding:3px 0; overflow:hidden; white-space:nowrap; }
+  .marquee-inner3 { display:inline-block; animation:marquee3 13s linear infinite; color:#000; font-family:'Comic Sans MS',cursive; font-size:12px; font-weight:bold; letter-spacing:2px; }
+
+  /* ── Badges ── */
+  .badge-row { display:flex; justify-content:center; align-items:center; gap:14px; padding:10px 12px 6px; background:#fffbe6; border-bottom:2px dashed #ff8c00; flex-wrap:wrap; }
+  .starburst { position:relative; width:86px; height:86px; display:flex; align-items:center; justify-content:center; animation:starspin 6s ease-in-out infinite; }
+  .starburst:nth-child(2){animation-duration:4s;animation-direction:reverse;}
+  .starburst:nth-child(3){animation-duration:7s;}
+  .starburst:nth-child(4){animation-duration:5s;animation-direction:reverse;}
+  .starburst:nth-child(5){animation-duration:8s;}
+  .starburst:nth-child(6){animation-duration:3.5s;animation-direction:reverse;}
+  .starburst svg { position:absolute; inset:0; width:100%; height:100%; }
+  .starburst-text { position:relative; z-index:1; font-family:Impact,sans-serif; font-size:9px; font-weight:900; color:#fff; text-align:center; text-transform:uppercase; line-height:1.15; max-width:56px; }
+
+  /* ── Emoji strip ── */
+  .emoji-fly { background:#fffbe6; border-top:2px dashed #ffa500; border-bottom:2px dashed #ffa500; padding:4px 0; overflow:hidden; white-space:nowrap; }
+  .emoji-inner { display:inline-block; animation:marquee3 9s linear infinite; font-size:20px; letter-spacing:10px; }
+
+  /* ── Mom strip ── */
+  .mom-strip { background:linear-gradient(to right,#ff69b4,#ff1493,#ff69b4); padding:6px; text-align:center; font-family:Impact,sans-serif; font-size:15px; color:#fff; text-shadow:1px 1px 0 #000; letter-spacing:2px; animation:blink 1.5s step-start infinite; border-top:3px dashed #fff; border-bottom:3px dashed #fff; }
+
+  /* ── Two column ── */
+  .cols { display:grid; grid-template-columns:1fr 220px; gap:0; padding:10px 12px; background:#fff; }
+
+  /* ── Side panel ── */
+  .side-panel { padding-left:12px; border-left:2px dashed #999; display:flex; flex-direction:column; gap:10px; }
+  .side-box { border:3px solid; border-color:#fff #808080 #808080 #fff; background:#d4d0c8; padding:6px; }
+  .side-box-title { background:linear-gradient(to right,#000080,#1084d0); color:#fff; font-family:Tahoma,sans-serif; font-size:11px; font-weight:bold; padding:2px 6px; margin:-6px -6px 6px -6px; }
+  .fake-progress { height:16px; background:#fff; border:2px inset #808080; overflow:hidden; margin:4px 0; }
+  .fake-progress-bar { height:100%; background:repeating-linear-gradient(90deg,#000080 0px,#000080 14px,#4169e1 14px,#4169e1 18px); width:72%; animation:progpulse 2s ease-in-out infinite alternate; }
+  .danger-box { background:#fff0f0; border:3px solid #ff0000; padding:8px; text-align:center; animation:dangerpulse 1.2s ease-in-out infinite alternate; }
+  .shake-icon { display:inline-block; animation:shake 0.45s ease-in-out infinite; font-size:32px; }
+  .countdown-box { background:#000; color:#ff0000; font-family:'Courier New',monospace; font-size:22px; font-weight:bold; text-align:center; padding:6px; border:3px solid #ff0000; letter-spacing:4px; animation:countglow 1s ease-in-out infinite alternate; margin:6px 0; }
+  .countdown-label { font-family:Impact,sans-serif; font-size:10px; color:#ff0000; text-align:center; text-transform:uppercase; animation:blink 1s step-start infinite; }
+  .counter-box { font-family:'Courier New',monospace; font-size:11px; background:#000; color:#00ff00; padding:3px 6px; border:2px inset #008000; text-align:center; }
+  .spin-globe { display:inline-block; animation:spin 3s linear infinite; font-size:22px; }
+  .cert-badge { border:3px double #ffd700; background:linear-gradient(135deg,#1a1a2e,#16213e); color:#ffd700; padding:6px; text-align:center; font-family:'Times New Roman',serif; font-size:9px; text-transform:uppercase; letter-spacing:1px; }
+  .cert-badge .cert-title { font-size:11px; font-weight:bold; }
+
+  /* ── Reassure box ── */
+  .reassure-box { background:#e6ffe6; border:3px solid #00aa00; padding:8px; text-align:center; font-family:Impact,sans-serif; font-size:11px; color:#005500; animation:zoomping 2s ease-in-out infinite; line-height:1.5; }
+  .reassure-box .big { font-size:13px; color:#007700; display:block; margin-bottom:4px; }
+
+  /* ── Action strip ── */
+  .action-strip { background:linear-gradient(to bottom,#fffbe6,#fff8cc); border-top:3px solid #ffa500; border-bottom:3px solid #ffa500; padding:10px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
+  .cta-btn { background:linear-gradient(to bottom,#ff6600,#cc3300); border:3px outset #ff8844; color:#fff; font-family:Impact,sans-serif; font-size:14px; font-weight:900; text-transform:uppercase; padding:8px 16px; cursor:pointer; text-shadow:1px 1px 0 #000; box-shadow:3px 3px 0 #000; letter-spacing:1px; text-decoration:none; display:inline-block; animation:ctawobble 0.8s ease-in-out infinite alternate; }
+  .cta-btn-green { background:linear-gradient(to bottom,#00aa00,#006600); border:3px outset #44cc44; animation-delay:0.4s; animation-duration:1.1s; }
+  .cta-btn-blue { background:linear-gradient(to bottom,#0055ff,#002299); border:3px outset #4488ff; animation-delay:0.2s; }
+  .cta-btn-pink { background:linear-gradient(to bottom,#ff1493,#aa0066); border:3px outset #ff69b4; animation-delay:0.6s; }
+
+  /* ── Status bar ── */
+  .win-statusbar { background:#d4d0c8; border-top:2px solid #fff; padding:3px 8px; display:flex; gap:12px; font-family:Tahoma,sans-serif; font-size:11px; color:#000; }
+  .status-panel { border:1px inset #808080; padding:0 8px; flex:1; }
+
+  /* ── Floating popups ── */
+  .float-popup { position:fixed; bottom:30px; right:20px; width:220px; background:#fffbe6; border:3px solid #ff0000; box-shadow:4px 4px 0 #000; z-index:9999; animation:popbounce 3s ease-in-out infinite; font-family:Tahoma,sans-serif; font-size:11px; }
+  .float-popup-title { background:linear-gradient(to right,#ff0000,#cc0000); color:#fff; font-weight:bold; padding:3px 6px; font-size:11px; display:flex; justify-content:space-between; }
+  .float-popup-body { padding:8px; text-align:center; line-height:1.5; }
+  .float-popup-body strong { color:#ff0000; font-size:13px; display:block; animation:blink 0.8s step-start infinite; }
+
+  .float-popup2 { position:fixed; bottom:30px; left:20px; width:210px; background:#e6ffe6; border:3px solid #00aa00; box-shadow:4px 4px 0 #000; z-index:9999; animation:popbounce2 2.5s ease-in-out infinite; font-family:Tahoma,sans-serif; font-size:11px; }
+  .float-popup2-title { background:linear-gradient(to right,#006600,#009900); color:#fff; font-weight:bold; padding:3px 6px; font-size:11px; }
+  .float-popup2-body { padding:8px; text-align:center; line-height:1.5; }
+
+  .float-popup3 { position:fixed; top:80px; right:20px; width:200px; background:#fff0ff; border:3px solid #ff1493; box-shadow:4px 4px 0 #000; z-index:9999; animation:popbounce3 4s ease-in-out infinite; font-family:Tahoma,sans-serif; font-size:11px; }
+  .float-popup3-title { background:linear-gradient(to right,#ff1493,#aa0066); color:#fff; font-weight:bold; padding:3px 6px; font-size:11px; }
+  .float-popup3-body { padding:8px; text-align:center; line-height:1.5; font-family:'Comic Sans MS',cursive; }
+
+  .float-popup4 { position:fixed; top:80px; left:20px; width:190px; background:#fffff0; border:3px solid #ff8800; box-shadow:4px 4px 0 #000; z-index:9999; animation:popbounce 5s ease-in-out infinite; font-family:Tahoma,sans-serif; font-size:11px; }
+  .float-popup4-title { background:linear-gradient(to right,#ff8800,#cc6600); color:#fff; font-weight:bold; padding:3px 6px; font-size:11px; }
+  .float-popup4-body { padding:8px; text-align:center; line-height:1.5; }
+</style>
+</head>
+<body>
+
+<!-- Top ticker -->
+<div class="top-ticker">
+  <span class="top-ticker-inner">
+    ⚡ YOUR MOM DETECTED 3 VIRUSES ON YOUR PC &nbsp;&nbsp;&nbsp;
+    ⚡ YOUR COMPUTER IS DEFINITELY NOT INFECTED &nbsp;&nbsp;&nbsp;
+    ⚡ YOUR MOM SAYS ACT NOW &nbsp;&nbsp;&nbsp;
+    ⚡ SYSTEM ALERT: YOUR MOM IS CALLING &nbsp;&nbsp;&nbsp;
+    ⚡ DO NOT TURN OFF YOUR PC (YOUR MOM IS USING IT) &nbsp;&nbsp;&nbsp;
+    ⚡ 100% SAFE — GUARANTEED BY YOUR MOM &nbsp;&nbsp;&nbsp;
+    ⚡ YOUR MOM RAN A SCAN: EVERYTHING IS FINE &nbsp;&nbsp;&nbsp;
+  </span>
+</div>
+
+<!-- Main window -->
+<div class="window">
+
+  <!-- Title bar -->
+  <div class="win-titlebar">
+    <div class="win-title">
+      <span class="win-icon"></span>
+      marcandronan.com — Your Mom's Security Center™
+    </div>
+    <div class="win-buttons">
+      <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" target="_blank"><div class="win-btn">_</div></a>
+      <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" target="_blank"><div class="win-btn">□</div></a>
+      <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" target="_blank"><div class="win-btn" style="background:#c0392b;color:#fff;">✕</div></a>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" target="_blank" class="tb-btn">◀ Back</a>
+    <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" target="_blank" class="tb-btn">Forward ▶</a>
+    <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" target="_blank" class="tb-btn">🏠 Home</a>
+    <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" target="_blank" class="tb-btn">⟳ Refresh</a>
+    <div class="address-bar">http://www.marcandronan.com/your-mom/security-alert/index.html</div>
+    <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" target="_blank" class="tb-btn">Go</a>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- Header -->
+    <div class="header-banner">
+      <div class="wordart">marcandronan.com</div>
+      <div class="header-sub">★ POWERED BY YOUR MOM'S SECURITY SYSTEMS™ ★</div>
+    </div>
+
+    <!-- Green marquee -->
+    <div class="marquee-wrap">
+      <span class="marquee-inner">
+        ★★★ YOUR COMPUTER IS DEFINITELY NOT INFECTED ★★★ &nbsp;&nbsp;&nbsp;
+        ★★★ YOUR MOM APPROVES THIS MESSAGE ★★★ &nbsp;&nbsp;&nbsp;
+        ★★★ TOTALLY LEGIT WEBSITE ★★★ &nbsp;&nbsp;&nbsp;
+        ★★★ YOUR MOM SAYS CLICK EVERYTHING ★★★ &nbsp;&nbsp;&nbsp;
+        ★★★ NO VIRUSES HERE (YOUR MOM CHECKED) ★★★ &nbsp;&nbsp;&nbsp;
+      </span>
+    </div>
+
+    <!-- Red marquee -->
+    <div class="marquee-wrap2">
+      <span class="marquee-inner2">
+        🚨 YOUR MOM DETECTED A VIRUS &nbsp;&nbsp;&nbsp;
+        🚨 YOUR COMPUTER IS DEFINITELY NOT INFECTED (YOUR MOM CHECKED) &nbsp;&nbsp;&nbsp;
+        🚨 CALL YOUR MOM: 1-800-MOM-SCAM &nbsp;&nbsp;&nbsp;
+        🚨 DO NOT CLOSE THIS TAB OR YOUR MOM WILL BE UPSET &nbsp;&nbsp;&nbsp;
+      </span>
+    </div>
+
+    <!-- Orange reverse marquee -->
+    <div class="marquee-wrap3">
+      <span class="marquee-inner3">
+        💖 YOUR MOM THINKS YOU'RE VERY SPECIAL 💖 &nbsp;&nbsp;&nbsp;
+        💻 YOUR PC IS FINE (YOUR MOM SAID SO) 💻 &nbsp;&nbsp;&nbsp;
+        🔐 SECURED BY YOUR MOM'S FIREWALL™ 🔐 &nbsp;&nbsp;&nbsp;
+        🏆 YOUR MOM VOTED #1 SECURITY SITE 1998–2004 🏆 &nbsp;&nbsp;&nbsp;
+        ✅ YOUR MOM GUARANTEES: DEFINITELY NOT INFECTED ✅ &nbsp;&nbsp;&nbsp;
+      </span>
+    </div>
+
+    <!-- Starbursts -->
+    <div class="badge-row">
+      <div class="starburst">
+        <svg viewBox="0 0 100 100"><polygon points="50,2 61,35 97,35 68,57 79,91 50,70 21,91 32,57 3,35 39,35" fill="#ff0000" stroke="#800000" stroke-width="2"/></svg>
+        <div class="starburst-text">100%<br>FREE<br>SCAN!</div>
+      </div>
+      <div class="starburst">
+        <svg viewBox="0 0 100 100"><polygon points="50,2 61,35 97,35 68,57 79,91 50,70 21,91 32,57 3,35 39,35" fill="#ff8c00" stroke="#cc6600" stroke-width="2"/></svg>
+        <div class="starburst-text">YOUR<br>MOM<br>INSIDE™</div>
+      </div>
+      <div class="starburst">
+        <svg viewBox="0 0 100 100"><polygon points="50,2 61,35 97,35 68,57 79,91 50,70 21,91 32,57 3,35 39,35" fill="#006400" stroke="#003200" stroke-width="2"/></svg>
+        <div class="starburst-text">NOT<br>A<br>SCAM!</div>
+      </div>
+      <div class="starburst">
+        <svg viewBox="0 0 100 100"><polygon points="50,2 61,35 97,35 68,57 79,91 50,70 21,91 32,57 3,35 39,35" fill="#000080" stroke="#000040" stroke-width="2"/></svg>
+        <div class="starburst-text">MOM<br>SINCE<br>1998!</div>
+      </div>
+      <div class="starburst">
+        <svg viewBox="0 0 100 100"><polygon points="50,2 61,35 97,35 68,57 79,91 50,70 21,91 32,57 3,35 39,35" fill="#9400d3" stroke="#5c0082" stroke-width="2"/></svg>
+        <div class="starburst-text">NO.<br>1 MOM<br>WORLD!</div>
+      </div>
+      <div class="starburst">
+        <svg viewBox="0 0 100 100"><polygon points="50,2 61,35 97,35 68,57 79,91 50,70 21,91 32,57 3,35 39,35" fill="#cc0000" stroke="#880000" stroke-width="2"/></svg>
+        <div class="starburst-text">DEF.<br>NOT<br>FAKE!</div>
+      </div>
+    </div>
+
+    <!-- Emoji strip -->
+    <div class="emoji-fly">
+      <span class="emoji-inner">👩 🔥 💀 ⚠️ 🛡️ 💻 🔐 ⚡ 🚨 👩 🔥 💀 ⚠️ 🛡️ 💻 🔐 ⚡ 🚨 👩 🔥 💀 ⚠️ 🛡️ 💻 🔐 ⚡ 🚨</span>
+    </div>
+
+    <!-- Mom strip -->
+    <div class="mom-strip">
+      👩 YOUR MOM HAS BEEN NOTIFIED OF THIS VISIT 👩 &nbsp;&nbsp;&nbsp; YOUR COMPUTER IS DEFINITELY NOT INFECTED &nbsp;&nbsp;&nbsp; 👩 YOUR MOM APPROVES 👩
+    </div>
+
+    <!-- Two columns -->
+    <div class="cols">
+
+      <!-- Left -->
+      <div style="padding-right:12px;display:flex;flex-direction:column;gap:10px;">
+        <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" target="_blank">
+          <img src="mar.jpg" style="width:100%;border:3px inset #808080;display:block;cursor:pointer;">
+        </a>
+        <div class="reassure-box">
+          <span class="big">✅ GOOD NEWS FROM YOUR MOM!</span>
+          YOUR COMPUTER IS DEFINITELY NOT INFECTED.<br>
+          YOUR MOM RAN A FULL SCAN AND EVERYTHING IS FINE.<br>
+          NOTHING TO WORRY ABOUT WHATSOEVER.<br>
+          <small style="color:#888;">(please send credit card number to confirm)</small>
+        </div>
+      </div>
+
+      <!-- Right -->
+      <div class="side-panel">
+
+        <div class="danger-box">
+          <div class="shake-icon">☠️</div>
+          <div style="font-family:Impact,sans-serif;font-size:10px;color:#cc0000;margin-top:4px;">YOUR MOM IS SCARED</div>
+        </div>
+
+        <div class="side-box">
+          <div class="side-box-title">⏰ Your Mom's Offer Expires</div>
+          <div class="countdown-box" id="countdown">09:59</div>
+          <div class="countdown-label">⚠ your mom says hurry ⚠</div>
+        </div>
+
+        <div class="side-box">
+          <div class="side-box-title">Your Mom's Scan Progress</div>
+          <div style="font-family:Tahoma,sans-serif;font-size:9px;margin:2px 0;">Scanning your mom...</div>
+          <div class="fake-progress"><div class="fake-progress-bar"></div></div>
+          <div style="font-family:Tahoma,sans-serif;font-size:9px;margin:2px 0;">Definitely not a virus...</div>
+          <div class="fake-progress"><div class="fake-progress-bar" style="width:91%;animation-delay:.3s"></div></div>
+          <div style="font-family:Tahoma,sans-serif;font-size:9px;margin:2px 0;">Calling your mom...</div>
+          <div class="fake-progress"><div class="fake-progress-bar" style="width:44%;animation-delay:.6s"></div></div>
+        </div>
+
+        <div class="side-box">
+          <div class="side-box-title"><span class="spin-globe">🌐</span> Moms Visited</div>
+          <div class="counter-box" id="momcounter">001,337,420</div>
+        </div>
+
+        <div class="cert-badge">
+          <div class="cert-title">★ Mom Certified ★</div>
+          <div>Secure &amp; Your Mom</div>
+          <div>marcandronan.com</div>
+          <div>© 2004 Your Mom Inc.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CTA strip -->
+    <div class="action-strip">
+      <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" target="_blank" class="cta-btn">⚡ CLICK HERE MOM ⚡</a>
+      <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" target="_blank" class="cta-btn cta-btn-green">✅ FREE MOM DOWNLOAD</a>
+      <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" target="_blank" class="cta-btn cta-btn-blue">🔐 SECURE YOUR MOM</a>
+      <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" target="_blank" class="cta-btn cta-btn-pink">👩 CALL YOUR MOM</a>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- Status bar -->
+  <div class="win-statusbar">
+    <div class="status-panel">✔ Your Mom Done</div>
+    <div class="status-panel">🌐 Your Mom's Internet</div>
+    <div class="status-panel">🔒 Definitely Not A Scam</div>
+    <div class="status-panel">👩 Mom Online</div>
+  </div>
+
+</div><!-- /window -->
+
+<!-- Floating popup: virus warning -->
+<div class="float-popup">
+  <div class="float-popup-title">⚠ Your Mom's Warning <span>✕</span></div>
+  <div class="float-popup-body">
+    <strong>YOUR MOM FOUND 3 VIRUSES!</strong>
+    Your computer is definitely not infected.<br>
+    Your mom checked. Please click to confirm.<br><br>
+    <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" target="_blank" class="cta-btn" style="font-size:11px;padding:4px 10px;animation:none;">FIX WITH MOM</a>
+  </div>
+</div>
+
+<!-- Floating popup: winner -->
+<div class="float-popup2">
+  <div class="float-popup2-title">🎉 Your Mom Says Congrats!</div>
+  <div class="float-popup2-body">
+    You are visitor <b>#1,000,000</b><br>
+    Your mom is so proud!<br><br>
+    <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" target="_blank" class="cta-btn cta-btn-green" style="font-size:11px;padding:4px 10px;animation:none;">CLAIM MOM PRIZE</a>
+  </div>
+</div>
+
+<!-- Floating popup: mom message top right -->
+<div class="float-popup3">
+  <div class="float-popup3-title">💖 Message From Your Mom</div>
+  <div class="float-popup3-body">
+    "honey did you eat?<br>also your computer<br>is definitely not infected<br>i checked"<br>
+    — Your Mom<br><br>
+    <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" target="_blank" class="cta-btn cta-btn-pink" style="font-size:10px;padding:3px 8px;display:inline-block;animation:none;">REPLY TO MOM</a>
+  </div>
+</div>
+
+<!-- Floating popup: urgent top left -->
+<div class="float-popup4">
+  <div class="float-popup4-title">🚨 URGENT MOM ALERT</div>
+  <div class="float-popup4-body">
+    Your mom detected<br>
+    <b>0 viruses</b> on your PC.<br>
+    Everything is fine.<br>
+    <small>Please enter SSN to verify.</small><br><br>
+    <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0" target="_blank" class="cta-btn" style="font-size:10px;padding:3px 8px;display:inline-block;animation:none;">OK MOM</a>
+  </div>
+</div>
+
+<script>
+  // Countdown timer
+  let seconds = 599;
+  setInterval(function() {
+    if (seconds > 0) seconds--;
+    const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+    const s = String(seconds % 60).padStart(2, '0');
+    const el = document.getElementById('countdown');
+    if (el) el.textContent = m + ':' + s;
+  }, 1000);
+
+  // Incrementing mom counter
+  let momCount = 1337420;
+  setInterval(function() {
+    momCount += Math.floor(Math.random() * 3) + 1;
+    const el = document.getElementById('momcounter');
+    if (el) {
+      const s = String(momCount);
+      el.textContent = s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+  }, 1800);
+</script>
+
+</body>
+</html>
